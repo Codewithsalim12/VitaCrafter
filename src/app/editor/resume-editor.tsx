@@ -180,10 +180,10 @@ export function ResumeEditor({
         pdf.addImage(imgData, "PNG", xOffset, 0, scaledWidth, scaledHeight);
       } else {
         // Content fits, center it vertically
-        const finalImgWidth = pdfWidth;
+      const finalImgWidth = pdfWidth;
         const finalImgHeight = (imgProps.height * pdfWidth) / imgProps.width;
         let finalY = (pdfHeight - finalImgHeight) / 2;
-        pdf.addImage(imgData, "PNG", 0, finalY, finalImgWidth, finalImgHeight);
+      pdf.addImage(imgData, "PNG", 0, finalY, finalImgWidth, finalImgHeight);
       }
 
       const links = clone.querySelectorAll<HTMLAnchorElement>("a[href]");

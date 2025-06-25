@@ -63,7 +63,9 @@ export default function AiAssistantPage() {
       setResult(data.result);
     } catch (err: any) {
       if (err.name === "AbortError") {
-        setError("AI response took too long. Please try again or simplify your input.");
+        setError(
+          "AI response took too long. Please try again or simplify your input."
+        );
       } else {
         setError(err.message || "Something went wrong");
       }
@@ -172,13 +174,19 @@ export default function AiAssistantPage() {
               </div>
             </div>
             <div
-              className={`whitespace-pre-line break-words rounded-xl p-6 min-h-[160px] max-h-[400px] w-full text-lg text-foreground bg-background/60 border border-border shadow-md transition-shadow select-text cursor-pointer hover:shadow-lg overflow-y-auto ${
+              className={`whitespace-pre-line break-words rounded-xl p-6 min-h-[160px] w-full text-lg text-foreground bg-background/60 border border-border shadow-md transition-shadow select-text cursor-pointer hover:shadow-lg overflow-y-auto ${
                 outputType === "skills" ? "font-mono" : "font-sans"
               }`}
+              style={{
+                outline: "none",
+                maxHeight: "40vh",
+                ...(typeof window !== "undefined" && window.innerWidth >= 768
+                  ? { maxHeight: "400px" }
+                  : {}),
+              }}
               onClick={handleCopy}
               title="Click to copy"
               tabIndex={0}
-              style={{ outline: "none" }}
             >
               {result}
             </div>

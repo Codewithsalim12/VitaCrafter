@@ -157,45 +157,45 @@ export default function TemplatesPage() {
               >
                 <Link
                   href={`/editor?template=${template.id}`}
-                  aria-label={`Use ${template.name} template`}
+                aria-label={`Use ${template.name} template`}
                   className=""
-                >
-                  <div className="relative rounded-2xl overflow-hidden shadow-xl border border-border/50 bg-card group-hover:shadow-primary/30 group-hover:border-primary/30 transition-all duration-500 ease-out group-focus-visible:ring-2 group-focus-visible:ring-ring group-focus-visible:ring-offset-2 group-focus-visible:ring-offset-background">
-                    {template.badge && (
-                      <div className={`absolute top-4 right-4 z-10 px-3 py-1 text-xs font-semibold text-white rounded-full ${template.badgeColor} shadow-sm`}>
-                        {template.badge}
-                      </div>
-                    )}
-                    <div className="relative aspect-[3/4.25] overflow-hidden">
-                      <Image
-                        src={template.image}
-                        alt={template.name}
-                        width={400}
-                        height={566}
-                        data-ai-hint={template.hint}
-                        className="w-full h-full object-cover object-center transition-transform duration-700 ease-in-out group-hover:scale-105"
-                        priority
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent opacity-80" />
+              >
+                <div className="relative rounded-2xl overflow-hidden shadow-xl border border-border/50 bg-card group-hover:shadow-primary/30 group-hover:border-primary/30 transition-all duration-500 ease-out group-focus-visible:ring-2 group-focus-visible:ring-ring group-focus-visible:ring-offset-2 group-focus-visible:ring-offset-background">
+                  {template.badge && (
+                    <div className={`absolute top-4 right-4 z-10 px-3 py-1 text-xs font-semibold text-white rounded-full ${template.badgeColor} shadow-sm`}>
+                      {template.badge}
                     </div>
-                    <div className="absolute inset-0 flex flex-col justify-end p-6">
-                      <h3 className="font-headline text-2xl font-bold text-white drop-shadow-lg">
-                        {template.name}
-                      </h3>
-                      <div className="opacity-0 translate-y-5 group-hover:opacity-100 group-hover:translate-y-0 mt-4 transition-all duration-500 ease-out">
-                        <Button 
-                          variant="secondary" 
-                          size="sm" 
-                          tabIndex={-1}
-                          className="shadow-md hover:shadow-lg transition-shadow"
-                        >
-                          Choose Template 
-                          <MoveRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                        </Button>
-                      </div>
+                  )}
+                  <div className="relative aspect-[3/4.25] overflow-hidden">
+                    <Image
+                      src={template.image}
+                      alt={template.name}
+                      width={400}
+                      height={566}
+                      data-ai-hint={template.hint}
+                      className="w-full h-full object-cover object-center transition-transform duration-700 ease-in-out group-hover:scale-105"
+                      priority
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent opacity-80" />
+                  </div>
+                  <div className="absolute inset-0 flex flex-col justify-end p-6">
+                    <h3 className="font-headline text-2xl font-bold text-white drop-shadow-lg">
+                      {template.name}
+                    </h3>
+                    <div className="opacity-0 translate-y-5 group-hover:opacity-100 group-hover:translate-y-0 mt-4 transition-all duration-500 ease-out">
+                      <Button 
+                        variant="secondary" 
+                        size="sm" 
+                        tabIndex={-1}
+                        className="shadow-md hover:shadow-lg transition-shadow"
+                      >
+                        Choose Template 
+                        <MoveRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                      </Button>
                     </div>
                   </div>
-                </Link>
+                </div>
+              </Link>
               </motion.div>
             ))}
           </div>

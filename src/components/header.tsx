@@ -212,6 +212,28 @@ export default function Header() {
                 </Link>
               )
             )}
+            {session && (
+              <>
+                <Link
+                  href="/dashboard"
+                  className="font-medium transition-colors hover:text-primary flex items-center gap-2"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <LayoutDashboard className="w-5 h-5" />
+                  <span>Dashboard</span>
+                </Link>
+                {session.user?.role === "admin" && (
+                  <Link
+                    href="/admin/dashboard"
+                    className="font-medium transition-colors hover:text-primary flex items-center gap-2"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    <Shield className="w-5 h-5" />
+                    <span>Admin</span>
+                  </Link>
+                )}
+              </>
+            )}
             <div className="pt-4 border-t">
               {status === "loading" ? (
                 <Skeleton className="h-9 w-full rounded-md" />

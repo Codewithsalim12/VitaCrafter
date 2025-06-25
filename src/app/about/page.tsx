@@ -17,7 +17,7 @@ export default function AboutPage() {
           </span>
           <h1 className="text-5xl md:text-6xl font-extrabold font-headline bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent drop-shadow-xl text-center">
             Empowering Your Career Journey
-          </h1>
+            </h1>
           <p className="mt-6 text-xl text-muted-foreground max-w-2xl text-center font-medium">
             VitaCrafter is on a mission to make world-class resume building
             accessible to everyone. No paywalls, no limits—just powerful,
