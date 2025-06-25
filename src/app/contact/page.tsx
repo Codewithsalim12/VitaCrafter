@@ -126,126 +126,92 @@ export default function ContactPage() {
         {/* Centered Grid Wrapper */}
         <div className="flex justify-center items-start w-full">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-5xl w-full mx-auto items-start">
-            {/* Contact Info Cards */}
+          {/* Contact Info Cards */}
             <div
               className="space-y-6 animate-fade-in-up"
               style={{ animationDelay: "0.1s" }}
             >
               <Card className="bg-white/80 dark:bg-secondary/80 backdrop-blur-xl border border-primary/20 shadow-2xl hover:scale-105 hover:shadow-primary/30 transition-all">
-                <CardContent className="p-6 flex items-start gap-4">
+              <CardContent className="p-6 flex items-start gap-4">
                   <div className="bg-primary/10 p-3 rounded-full animate-pulse-slow">
-                    <Phone className="w-6 h-6 text-primary" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold">Call Us</h3>
+                  <Phone className="w-6 h-6 text-primary" />
+                </div>
+                <div>
+                  <h3 className="font-semibold">Call Us</h3>
                     <p className="text-muted-foreground mt-1">
-                      +1 (555) 123-4567
+                      +91- 6006798656
                     </p>
                     <p className="text-sm text-muted-foreground/80 mt-2">
                       Mon-Fri, 9am-5pm EST
                     </p>
-                  </div>
-                </CardContent>
-              </Card>
+                </div>
+              </CardContent>
+            </Card>
 
               <Card className="bg-white/80 dark:bg-secondary/80 backdrop-blur-xl border border-primary/20 shadow-2xl hover:scale-105 hover:shadow-primary/30 transition-all">
-                <CardContent className="p-6 flex items-start gap-4">
+              <CardContent className="p-6 flex items-start gap-4">
                   <div className="bg-primary/10 p-3 rounded-full animate-pulse-slow">
-                    <Mail className="w-6 h-6 text-primary" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold">Email Us</h3>
+                  <Mail className="w-6 h-6 text-primary" />
+                </div>
+                <div>
+                  <h3 className="font-semibold">Email Us</h3>
                     <p className="text-muted-foreground mt-1">
                       support@vitacrafter.com
                     </p>
                     <p className="text-sm text-muted-foreground/80 mt-2">
                       Typically reply within 24 hours
                     </p>
-                  </div>
-                </CardContent>
-              </Card>
+                </div>
+              </CardContent>
+            </Card>
 
               <Card className="bg-white/80 dark:bg-secondary/80 backdrop-blur-xl border border-primary/20 shadow-2xl hover:scale-105 hover:shadow-primary/30 transition-all">
-                <CardContent className="p-6 flex items-start gap-4">
+              <CardContent className="p-6 flex items-start gap-4">
                   <div className="bg-primary/10 p-3 rounded-full animate-pulse-slow">
-                    <MapPin className="w-6 h-6 text-primary" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold">Visit Us</h3>
-                    <p className="text-muted-foreground mt-1">
-                      123 Resume Street
+                  <MapPin className="w-6 h-6 text-primary" />
+                </div>
+                <div>
+                  <h3 className="font-semibold">Visit Us</h3>
+                    <p className="text-muted-foreground mt-1">193224 Kupwara</p>
+                    <p className="text-muted-foreground">
+                      India, Jammu & Kashmir
                     </p>
-                    <p className="text-muted-foreground">New York, NY 10001</p>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
 
-            {/* Contact Form */}
+          {/* Contact Form */}
             <Card
               className="lg:col-span-2 shadow-2xl border-primary/20 bg-white/80 dark:bg-secondary/80 backdrop-blur-xl border hover:scale-[1.01] hover:shadow-primary/30 transition-all animate-fade-in-up"
               style={{ animationDelay: "0.2s" }}
             >
-              <CardHeader>
-                <CardTitle className="font-headline text-2xl flex items-center gap-2">
+            <CardHeader>
+              <CardTitle className="font-headline text-2xl flex items-center gap-2">
                   <MessageSquare className="w-6 h-6 text-primary animate-float" />
-                  Send us a Message
-                </CardTitle>
-                <CardDescription>
+                Send us a Message
+              </CardTitle>
+              <CardDescription>
                   Fill out the form below and we'll get back to you as soon as
                   possible.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Form {...form}>
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Form {...form}>
                   <form
                     onSubmit={form.handleSubmit(onSubmit)}
                     className="space-y-6"
                   >
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <FormField
-                        control={form.control}
-                        name="name"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormControl>
-                              <Input
-                                placeholder="Your Name"
-                                {...field}
-                                className="bg-background/50 backdrop-blur-sm"
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={form.control}
-                        name="email"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormControl>
-                              <Input
-                                type="email"
-                                placeholder="Your Email"
-                                {...field}
-                                className="bg-background/50 backdrop-blur-sm"
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <FormField
                       control={form.control}
-                      name="subject"
+                      name="name"
                       render={({ field }) => (
                         <FormItem>
                           <FormControl>
-                            <Input
-                              placeholder="Subject"
-                              {...field}
+                            <Input 
+                              placeholder="Your Name" 
+                              {...field} 
                               className="bg-background/50 backdrop-blur-sm"
                             />
                           </FormControl>
@@ -255,36 +221,70 @@ export default function ContactPage() {
                     />
                     <FormField
                       control={form.control}
-                      name="message"
+                      name="email"
                       render={({ field }) => (
                         <FormItem>
                           <FormControl>
-                            <Textarea
-                              placeholder="Your Message"
+                            <Input 
+                              type="email" 
+                              placeholder="Your Email" 
+                              {...field} 
+                              className="bg-background/50 backdrop-blur-sm"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <FormField
+                    control={form.control}
+                    name="subject"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <Input 
+                            placeholder="Subject" 
+                            {...field} 
+                            className="bg-background/50 backdrop-blur-sm"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="message"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <Textarea 
+                            placeholder="Your Message" 
                               rows={5}
-                              {...field}
+                            {...field} 
                               className="bg-background/50 backdrop-blur-sm"
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <Button
-                      type="submit"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <Button 
+                    type="submit" 
                       size="lg"
                       className="w-full font-bold text-lg shadow-xl hover:scale-105 hover:bg-gradient-to-r hover:from-primary hover:to-accent transition-transform duration-300 flex items-center justify-center gap-2"
-                      disabled={isPending}
-                    >
-                      {isPending ? (
+                    disabled={isPending}
+                  >
+                    {isPending ? (
                         <Loader2 className="w-5 h-5 animate-spin" />
                       ) : null}
-                      Send Message
-                    </Button>
-                  </form>
-                </Form>
-              </CardContent>
-            </Card>
+                    Send Message
+                  </Button>
+                </form>
+              </Form>
+            </CardContent>
+          </Card>
           </div>
         </div>
 
@@ -306,15 +306,15 @@ export default function ContactPage() {
               <Accordion type="single" collapsible className="w-full">
                 {faqs.map((faq, i) => (
                   <AccordionItem key={i} value={faq.question}>
-                    <AccordionTrigger className="font-semibold text-lg">
-                      {faq.question}
-                    </AccordionTrigger>
+                    <AccordionTrigger className="font-semibold text-sm sm:text-base truncate whitespace-nowrap overflow-hidden text-ellipsis max-w-full flex items-center">
+                      <span className="truncate flex-1">{faq.question}</span>
+                </AccordionTrigger>
                     <AccordionContent className="text-muted-foreground text-base">
-                      {faq.answer}
-                    </AccordionContent>
-                  </AccordionItem>
-                ))}
-              </Accordion>
+                  {faq.answer}
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
             </CardContent>
           </Card>
         </div>

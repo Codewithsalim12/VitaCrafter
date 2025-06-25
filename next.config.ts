@@ -50,7 +50,24 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "staticlearn.shine.com",
       },
+      {
+        protocol: "https",
+        hostname: "www.adobe.com",
+      },
+      {
+        protocol: "https",
+        hostname: "resumeworded.com",
+      },
+      {
+        protocol: "https",
+        hostname: "images.resumaker.ai",
+      },
+      {
+        protocol: "https",
+        hostname: "www.my-resume-templates.com",
+      },
     ],
+    domains: ["www.livecareer.com", "i.imgur.com"],
   },
 };
 

@@ -47,6 +47,7 @@ export const resumeSchema = z.object({
       id: z.string(),
       name: z.string().min(1, "Skill cannot be empty"),
       category: z.string().min(1, "Category cannot be empty"),
+      level: z.number().min(1).max(5).optional(),
     })
   ),
   extracurriculars: z.array(

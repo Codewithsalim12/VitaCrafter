@@ -58,6 +58,24 @@ const features = [
     imageHint: "ai assistant",
     align: "right",
   },
+  {
+    icon: (
+      <Sparkles className="w-10 h-10 text-primary drop-shadow-glow animate-float animation-delay-6000" />
+    ),
+    title: "AI Assistant",
+    description:
+      "Instantly generate professional resume summaries, objectives, cover letter intros, and skills lists with the power of AI. Just describe yourself or your role, and let the AI Assistant do the writing for you—perfect for overcoming writer's block and saving time.",
+    points: [
+      "Create resume summaries, objectives, and cover letter intros in seconds.",
+      "Get tailored skills lists for your profession or industry.",
+      "No more writer's block—AI helps you get started fast.",
+      "Easy to use: just enter a short description and choose what you want to generate.",
+    ],
+    image:
+      "https://www.adobe.com/acrobat/generative-ai-pdf/media_1ad1d7495e7ad1ddaccddbb7abf89b02da1325355.png?width=750&format=png&optimize=medium",
+    imageHint: "ai assistant tool",
+    align: "left",
+  },
 ];
 
 export default function FeaturesPage() {
