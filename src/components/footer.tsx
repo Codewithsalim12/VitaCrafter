@@ -113,12 +113,26 @@ export default function Footer() {
           </div>
         </div>
         {/* Bottom Text */}
-        <div className="w-full flex flex-col items-center mt-8 pt-6 border-t border-border text-center text-sm text-muted-foreground">
+        <div className="w-full flex flex-col items-center mt-8 pt-6 border-t border-border text-center text-sm text-muted-foreground gap-2">
           <span>
             © {new Date().getFullYear()}{" "}
             <span className="font-semibold text-foreground">VitaCrafter</span>.
             All rights reserved.
           </span>
+          <div className="flex gap-4 mt-2">
+            <Link
+              href="/privacy-policy"
+              className="underline underline-offset-2 hover:text-primary transition-colors"
+            >
+              Privacy Policy
+            </Link>
+            <Link
+              href="/terms-of-service"
+              className="underline underline-offset-2 hover:text-primary transition-colors"
+            >
+              Terms of Service
+            </Link>
+          </div>
         </div>
       </div>
     </footer>

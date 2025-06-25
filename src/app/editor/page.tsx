@@ -4,8 +4,9 @@ import { ResumeEditor } from "./resume-editor";
 import { templates } from "./templates";
 import type { TemplateId } from "./templates";
 import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 
-export default function EditorPage() {
+function EditorPage() {
   const searchParams = useSearchParams();
   const templateId = (searchParams.get("template") || "classic") as TemplateId;
   const initialData = templates[templateId] || templates.classic;
@@ -14,5 +15,13 @@ export default function EditorPage() {
     <div>
       <ResumeEditor initialData={initialData} templateId={templateId} />
     </div>
+  );
+}
+
+export default function EditorPageWrapper() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <EditorPage />
+    </Suspense>
   );
 }

@@ -64,7 +64,9 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async signIn({ user, account }) {
       if (account?.provider === "google") {
-        await dbConnect();
+        if (mongoose.connection.readyState !== 1) {
+          await dbConnect();
+        }
         try {
           const existingUser = await User.findOne({ email: user.email });
           if (!existingUser) {
@@ -91,8 +93,10 @@ export const authOptions: NextAuthOptions = {
       return true;
     },
     async jwt({ token, user, account }) {
-      await dbConnect();
-      if (user) {
+      if ((!token.id || !token.role) && user) {
+        if (mongoose.connection.readyState !== 1) {
+          await dbConnect();
+        }
         const dbUser = await User.findOne({ email: user.email });
         if (dbUser) {
           token.id = dbUser._id.toString();

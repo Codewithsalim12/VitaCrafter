@@ -306,6 +306,12 @@ export function ResumePreview({
               className={photoStyle.photo}
               unoptimized
               priority
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                if (target.src !== "/default-avatar.png") {
+                  target.src = "/default-avatar.png";
+                }
+              }}
             />
           )}
           <div className={photoStyle.header}>
