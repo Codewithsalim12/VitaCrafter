@@ -5,7 +5,15 @@ import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { IUser } from "@/models/User";
 import { Button } from "@/components/ui/button";
-import { Trash2, ShieldCheck, User as UserIcon } from "lucide-react";
+import {
+  Trash2,
+  ShieldCheck,
+  User as UserIcon,
+  BarChart2,
+  Users,
+  UserPlus,
+  Activity,
+} from "lucide-react";
 import {
   Table,
   TableBody,
@@ -39,6 +47,8 @@ export default function AdminDashboardPage() {
   const { toast } = useToast();
   const [users, setUsers] = useState<IUser[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [analytics, setAnalytics] = useState<any>(null);
+  const [isAnalyticsLoading, setIsAnalyticsLoading] = useState(true);
 
   useEffect(() => {
     if (status === "authenticated") {
@@ -46,6 +56,7 @@ export default function AdminDashboardPage() {
         router.push("/dashboard");
       } else {
         fetchUsers();
+        fetchAnalytics();
       }
     }
   }, [status, session, router]);
@@ -72,6 +83,21 @@ export default function AdminDashboardPage() {
       });
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const fetchAnalytics = async () => {
+    setIsAnalyticsLoading(true);
+    try {
+      const response = await fetch("/api/admin/users?analytics=1");
+      if (response.ok) {
+        const data = await response.json();
+        setAnalytics(data);
+      }
+    } catch (error) {
+      // ignore
+    } finally {
+      setIsAnalyticsLoading(false);
     }
   };
 
@@ -175,6 +201,111 @@ export default function AdminDashboardPage() {
   return (
     <div className="container mx-auto p-4 md:p-8">
       <h1 className="text-3xl font-bold mb-8">Admin Dashboard</h1>
+      {/* Analytics Section */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
+        <div className="bg-gradient-to-br from-primary/80 to-accent/80 rounded-xl p-6 flex flex-col items-center shadow-lg text-white">
+          <Users className="h-8 w-8 mb-2" />
+          <div className="text-2xl font-bold">
+            {isAnalyticsLoading ? (
+              <Skeleton className="h-8 w-16" />
+            ) : (
+              analytics?.totalUsers ?? "-"
+            )}
+          </div>
+          <div className="text-sm opacity-80">Total Users</div>
+        </div>
+        <div className="bg-gradient-to-br from-green-400/80 to-green-600/80 rounded-xl p-6 flex flex-col items-center shadow-lg text-white">
+          <UserPlus className="h-8 w-8 mb-2" />
+          <div className="text-2xl font-bold">
+            {isAnalyticsLoading ? (
+              <Skeleton className="h-8 w-16" />
+            ) : (
+              analytics?.newUsersToday ?? "-"
+            )}
+          </div>
+          <div className="text-sm opacity-80">New Today</div>
+        </div>
+        <div className="bg-gradient-to-br from-blue-400/80 to-blue-600/80 rounded-xl p-6 flex flex-col items-center shadow-lg text-white">
+          <BarChart2 className="h-8 w-8 mb-2" />
+          <div className="text-2xl font-bold">
+            {isAnalyticsLoading ? (
+              <Skeleton className="h-8 w-16" />
+            ) : (
+              analytics?.newUsersThisWeek ?? "-"
+            )}
+          </div>
+          <div className="text-sm opacity-80">New This Week</div>
+        </div>
+        <div className="bg-gradient-to-br from-pink-400/80 to-pink-600/80 rounded-xl p-6 flex flex-col items-center shadow-lg text-white">
+          <Activity className="h-8 w-8 mb-2" />
+          <div className="text-2xl font-bold">
+            {isAnalyticsLoading ? (
+              <Skeleton className="h-8 w-16" />
+            ) : (
+              analytics?.activeUsers ?? "-"
+            )}
+          </div>
+          <div className="text-sm opacity-80">Active (7d)</div>
+        </div>
+      </div>
+      {/* Recent Users Table */}
+      <div className="mb-12">
+        <h2 className="text-xl font-semibold mb-4">
+          Recent Registrations & Logins
+        </h2>
+        <div className="border rounded-lg overflow-x-auto">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Name</TableHead>
+                <TableHead>Email</TableHead>
+                <TableHead>Role</TableHead>
+                <TableHead>Registered</TableHead>
+                <TableHead>Last Login</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {isAnalyticsLoading || !analytics?.recentUsers
+                ? [...Array(5)].map((_, i) => (
+                    <TableRow key={i}>
+                      <TableCell>
+                        <Skeleton className="h-5 w-32" />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className="h-5 w-48" />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className="h-5 w-20" />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className="h-5 w-32" />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className="h-5 w-32" />
+                      </TableCell>
+                    </TableRow>
+                  ))
+                : analytics.recentUsers.map((user: any) => (
+                    <TableRow key={user._id}>
+                      <TableCell>{user.name}</TableCell>
+                      <TableCell>{user.email}</TableCell>
+                      <TableCell>{user.role}</TableCell>
+                      <TableCell>
+                        {user.createdAt
+                          ? new Date(user.createdAt).toLocaleString()
+                          : "-"}
+                      </TableCell>
+                      <TableCell>
+                        {user.lastLogin
+                          ? new Date(user.lastLogin).toLocaleString()
+                          : "-"}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+            </TableBody>
+          </Table>
+        </div>
+      </div>
       <div className="border rounded-lg">
         <Table>
           <TableHeader>

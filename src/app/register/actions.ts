@@ -1,21 +1,21 @@
-'use server';
+"use server";
 
-import { z } from 'zod';
-import bcrypt from 'bcryptjs';
-import dbConnect from '@/lib/dbConnect';
-import User from '@/models/User';
+import { z } from "zod";
+import bcrypt from "bcryptjs";
+import dbConnect from "@/lib/dbConnect";
+import User from "@/models/User";
 
 const registerSchema = z.object({
-  name: z.string().min(2, 'Name must be at least 2 characters.'),
-  email: z.string().email('Please enter a valid email address.'),
-  password: z.string().min(6, 'Password must be at least 6 characters.'),
+  name: z.string().min(2, "Name must be at least 2 characters."),
+  email: z.string().email("Please enter a valid email address."),
+  password: z.string().min(6, "Password must be at least 6 characters."),
 });
 
 export async function registerUser(values: z.infer<typeof registerSchema>) {
   const validatedFields = registerSchema.safeParse(values);
 
   if (!validatedFields.success) {
-    return { error: 'Invalid fields.' };
+    return { error: "Invalid fields." };
   }
 
   const { name, email, password } = validatedFields.data;
@@ -25,7 +25,7 @@ export async function registerUser(values: z.infer<typeof registerSchema>) {
   const existingUser = await User.findOne({ email });
 
   if (existingUser) {
-    return { error: 'An account with this email already exists.' };
+    return { error: "An account with this email already exists." };
   }
 
   const hashedPassword = await bcrypt.hash(password, 10);
@@ -35,10 +35,11 @@ export async function registerUser(values: z.infer<typeof registerSchema>) {
       name,
       email,
       password: hashedPassword,
+      role: email === process.env.ADMIN_EMAIL ? "admin" : "user",
     });
-    return { success: 'User registered successfully!' };
+    return { success: "User registered successfully!" };
   } catch (error) {
-    console.error('User registration error:', error);
-    return { error: 'Failed to register user. Please try again.' };
+    console.error("User registration error:", error);
+    return { error: "Failed to register user. Please try again." };
   }
 }

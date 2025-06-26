@@ -7,6 +7,9 @@ export interface IUser extends Document {
   image?: string;
   password?: string;
   role?: "user" | "admin";
+  createdAt?: Date;
+  lastLogin?: Date;
+  loginCount?: number;
 }
 
 const UserSchema: Schema = new Schema({
@@ -20,6 +23,9 @@ const UserSchema: Schema = new Schema({
     enum: ["user", "admin"],
     default: "user",
   },
+  createdAt: { type: Date, default: Date.now },
+  lastLogin: { type: Date },
+  loginCount: { type: Number, default: 0 },
 });
 
 const User: Model<IUser> =

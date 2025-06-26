@@ -69,7 +69,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-muted/40 to-accent/10 flex flex-col">
       {/* Hero Section - Reference-Inspired, Dark BG */}
-      <section className="relative min-h-[700px] flex flex-col md:flex-row items-center justify-between px-4 md:px-16 py-16 bg-gradient-to-br from-[#181c24] via-[#23272f] to-[#181c24] overflow-hidden">
+      <section className="relative min-h-[700px] flex flex-col md:flex-row items-center justify-between px-4 md:px-16 py-4 bg-gradient-to-br from-[#181c24] via-[#23272f] to-[#181c24] overflow-hidden">
         {/* Decorative geometric shapes */}
         <span className="absolute left-10 top-24 w-16 h-16 bg-orange-400/20 rounded-full z-0" />
         <span className="absolute right-24 top-10 w-10 h-10 bg-orange-400/10 rounded-full z-0" />
@@ -78,21 +78,23 @@ export default function HomePage() {
         <span className="absolute left-1/2 top-1/2 w-24 h-24 bg-orange-400/10 rounded-full z-0" />
         {/* Left: Headline, subheadline, button */}
         <div className="flex-1 flex flex-col items-start justify-center z-10 max-w-xl">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold font-headline leading-tight text-white mb-6">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold font-headline leading-tight text-white mb-2">
             Create a <span className="text-orange-400">resume</span> that
             <br />
             secures your <span className="text-orange-400">dream job</span>
           </h1>
-          <p className="text-lg md:text-xl font-body text-gray-300 mb-10 max-w-md">
+          <p className="text-lg md:text-xl font-headline text-gray-300 mb-4 max-w-md">
             Build a resume that piques the interest of recruiters and gets you
             hired. It's fast and easy to use.
           </p>
-          <a
-            href="/templates"
-            className="inline-block rounded-full bg-orange-500 hover:bg-orange-400 text-white font-body font-bold text-xl px-10 py-5 shadow-lg transition-all duration-200 mb-6"
-          >
-            Try for free
-          </a>
+          <div className="flex flex-col sm:flex-row gap-4 mb-6">
+            <a
+              href="/templates"
+              className="inline-block rounded-full bg-orange-500 hover:bg-orange-400 text-white font-headline font-bold text-xl px-10 py-5 shadow-lg transition-all duration-200"
+            >
+              Try for free
+            </a>
+          </div>
           {/* Star reviews below button */}
           <div className="flex items-center gap-2 bg-white/10 rounded-full px-5 py-2 shadow border border-white/10">
             <div className="flex gap-0.5">
@@ -107,7 +109,7 @@ export default function HomePage() {
                 </svg>
               ))}
             </div>
-            <span className="text-base font-bold font-body text-gray-200 ml-2">
+            <span className="text-base font-medium font-headline text-gray-200 ml-2">
               4.9/5.0 · 2,300+ reviews
             </span>
           </div>

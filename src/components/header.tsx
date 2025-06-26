@@ -101,9 +101,17 @@ export default function Header() {
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => router.push("/dashboard")}>
+        <DropdownMenuItem
+          onClick={() =>
+            router.push(
+              session?.user.role === "admin" ? "/admin/dashboard" : "/dashboard"
+            )
+          }
+        >
           <LayoutDashboard className="mr-2 h-4 w-4" />
-          <span>Dashboard</span>
+          <span>
+            {session?.user.role === "admin" ? "Admin Dashboard" : "Dashboard"}
+          </span>
         </DropdownMenuItem>
         {session?.user.role === "admin" && (
           <DropdownMenuItem onClick={() => router.push("/admin/dashboard")}>
@@ -215,12 +223,20 @@ export default function Header() {
             {session && (
               <>
                 <Link
-                  href="/dashboard"
+                  href={
+                    session?.user.role === "admin"
+                      ? "/admin/dashboard"
+                      : "/dashboard"
+                  }
                   className="font-medium transition-colors hover:text-primary flex items-center gap-2"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   <LayoutDashboard className="w-5 h-5" />
-                  <span>Dashboard</span>
+                  <span>
+                    {session?.user.role === "admin"
+                      ? "Admin Dashboard"
+                      : "Dashboard"}
+                  </span>
                 </Link>
                 {session.user?.role === "admin" && (
                   <Link

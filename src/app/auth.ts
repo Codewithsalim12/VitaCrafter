@@ -68,16 +68,30 @@ export const authOptions: NextAuthOptions = {
           await dbConnect();
         }
         try {
-          const existingUser = await User.findOne({ email: user.email });
+          let existingUser = await User.findOne({ email: user.email });
           if (!existingUser) {
             const newUser = await User.create({
               email: user.email,
               name: user.name,
               image: user.image,
+              role: user.email === process.env.ADMIN_EMAIL ? "admin" : "user",
+              lastLogin: new Date(),
+              loginCount: 1,
             });
             user.id = newUser._id.toString();
             user.role = newUser.role;
           } else {
+            // Update analytics fields
+            existingUser.lastLogin = new Date();
+            existingUser.loginCount = (existingUser.loginCount || 0) + 1;
+            // Ensure admin role if email matches
+            if (
+              existingUser.email === process.env.ADMIN_EMAIL &&
+              existingUser.role !== "admin"
+            ) {
+              existingUser.role = "admin";
+            }
+            await existingUser.save();
             user.id = existingUser._id.toString();
             user.role = existingUser.role;
           }
@@ -88,6 +102,28 @@ export const authOptions: NextAuthOptions = {
             error
           );
           return false;
+        }
+      } else if (account?.provider === "credentials") {
+        if (mongoose.connection.readyState !== 1) {
+          await dbConnect();
+        }
+        try {
+          const dbUser = await User.findOne({ email: user.email });
+          if (dbUser) {
+            dbUser.lastLogin = new Date();
+            dbUser.loginCount = (dbUser.loginCount || 0) + 1;
+            // Ensure admin role if email matches
+            if (
+              dbUser.email === process.env.ADMIN_EMAIL &&
+              dbUser.role !== "admin"
+            ) {
+              dbUser.role = "admin";
+            }
+            await dbUser.save();
+            user.role = dbUser.role;
+          }
+        } catch (error) {
+          console.error("Error updating login analytics:", error);
         }
       }
       return true;
