@@ -16,6 +16,8 @@ import {
   Wrench,
   Laptop,
   Award,
+  FolderOpen,
+  Users,
 } from "lucide-react";
 import type { TemplateId } from "./templates";
 
@@ -41,6 +43,7 @@ export function ResumePreview({
     skills,
     certifications,
     languages,
+    extracurriculars,
   } = data;
 
   const groupedSkills = skills?.reduce((acc, skill) => {
@@ -487,6 +490,60 @@ export function ResumePreview({
             ))}
           </div>
         )}
+        {/* PROJECTS */}
+        {projects && projects.length > 0 && (
+          <div className="mb-2">
+            <div className="bg-gray-200 px-3 py-1 text-xs font-bold tracking-widest inline-block mb-2 uppercase text-gray-700">
+              Projects
+            </div>
+            {projects.map((proj, idx) => (
+              <div key={proj.id} className="mb-1">
+                <span className="font-bold text-[15px]">{proj.name}</span>
+                {proj.description && (
+                  <div className="text-[15px] text-gray-700 ml-2 inline">
+                    {proj.description}
+                  </div>
+                )}
+                {proj.url && (
+                  <div className="text-[15px] text-blue-700 ml-2 inline">
+                    <a
+                      href={proj.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {proj.url}
+                    </a>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+        {/* EXTRACURRICULARS */}
+        {extracurriculars && extracurriculars.length > 0 && (
+          <div className="mb-2">
+            <div className="bg-gray-200 px-3 py-1 text-xs font-bold tracking-widest inline-block mb-2 uppercase text-gray-700">
+              Extracurricular Activities
+            </div>
+            {extracurriculars.map((extra, idx) => (
+              <div key={extra.id} className="mb-1">
+                <span className="font-bold text-[15px]">
+                  {extra.title} - {extra.organization}
+                </span>
+                {extra.description && (
+                  <div className="text-[15px] text-gray-700 ml-2 inline">
+                    {extra.description}
+                  </div>
+                )}
+                {(extra.startDate || extra.endDate) && (
+                  <div className="text-xs text-gray-500 ml-2 inline">
+                    {extra.startDate} - {extra.endDate}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     );
   }
@@ -600,6 +657,63 @@ export function ResumePreview({
                 </div>
               </section>
             )}
+            {languages && languages.length > 0 && (
+              <section className={photoStyle.section}>
+                <h2 className={photoStyle.sectionTitle}>Languages</h2>
+                <ul className="mt-1 space-y-1 list-disc pl-5 text-sm">
+                  {languages.map((lang) => (
+                    <li key={lang.id}>
+                      {lang.name} ({lang.level})
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )}
+            {extracurriculars && extracurriculars.length > 0 && (
+              <section className={photoStyle.section}>
+                <h2 className={photoStyle.sectionTitle}>
+                  Extracurricular Activities
+                </h2>
+                {extracurriculars.map((extra, index) => (
+                  <div
+                    key={extra.id}
+                    className={
+                      index === extracurriculars.length - 1 ? "mb-0" : "mb-2"
+                    }
+                  >
+                    <p className="font-semibold">
+                      {extra.title} - {extra.organization}
+                    </p>
+                    {extra.description && (
+                      <p className="text-sm">{extra.description}</p>
+                    )}
+                    {extra.startDate || extra.endDate ? (
+                      <p className="text-xs text-gray-500">
+                        {extra.startDate} - {extra.endDate}
+                      </p>
+                    ) : null}
+                  </div>
+                ))}
+              </section>
+            )}
+            {certifications && certifications.length > 0 && (
+              <section className={photoStyle.section}>
+                <h2 className={photoStyle.sectionTitle}>Certifications</h2>
+                {certifications.map((cert, index) => (
+                  <div
+                    key={cert.id}
+                    className={
+                      index === certifications.length - 1 ? "mb-0" : "mb-2"
+                    }
+                  >
+                    <p className="font-semibold">{cert.name}</p>
+                    {cert.description && (
+                      <p className="text-sm">{cert.description}</p>
+                    )}
+                  </div>
+                ))}
+              </section>
+            )}
           </div>
         </aside>
         {/* Main Content */}
@@ -661,49 +775,112 @@ export function ResumePreview({
     return (
       <div
         id={id}
-        className="w-[210mm] h-[297mm] mx-auto p-8 bg-white shadow-lg text-black font-sans text-[15px] leading-tight relative flex flex-col gap-2"
+        className="w-[210mm] min-h-[297mm] mx-auto p-8 bg-white shadow-lg text-black font-sans text-[15px] leading-tight relative flex flex-col gap-2"
         data-pdf-container="true"
       >
-        {/* Top: Name, subtitle, contact row */}
-        <div className="flex flex-col gap-1 mb-2">
-          <h1 className="text-3xl font-headline font-bold text-gray-900 leading-tight">
-            {personalInfo.name}
-          </h1>
-          {personalInfo.role && (
-            <div className="text-base text-gray-700 font-medium mb-1">
-              {personalInfo.role}
+        {/* Top: Name, subtitle, photo */}
+        <div className="flex justify-between items-start mb-2">
+          <div>
+            <h1 className="text-4xl font-headline font-light tracking-wide text-gray-700 leading-tight">
+              <span className="text-gray-400">
+                {personalInfo.name?.split(" ")[0]}
+              </span>{" "}
+              <span className="font-bold text-black">
+                {personalInfo.name?.split(" ").slice(1).join(" ")}
+              </span>
+            </h1>
+            {/* Use professionalSummary as subtitle if role is not present */}
+            {"role" in personalInfo && personalInfo.role ? (
+              <div className="mt-1 mb-2">
+                <span className="italic text-[17px] text-gray-400 underline cursor-pointer">
+                  {personalInfo.role}
+                </span>
+              </div>
+            ) : null}
+            {professionalSummary && (
+              <div className="text-[15px] text-gray-700 max-w-2xl mb-2">
+                {professionalSummary}
+              </div>
+            )}
+          </div>
+          {personalInfo.photo && (
+            <Image
+              src={personalInfo.photo}
+              alt={personalInfo.name || "Profile photo"}
+              width={120}
+              height={120}
+              className="rounded-full object-cover border-2 border-gray-300 shadow-md ml-4"
+              unoptimized
+              priority
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                if (target.src !== "/default-avatar.png") {
+                  target.src = "/default-avatar.png";
+                }
+              }}
+            />
+          )}
+        </div>
+        {/* Contact bar */}
+        <div className="flex items-center gap-8 border-t border-b border-gray-400 py-2 mb-4 text-[15px]">
+          {personalInfo.email && (
+            <div className="flex items-center gap-2">
+              <Mail className="w-4 h-4" />
+              <span>{personalInfo.email}</span>
             </div>
           )}
-          <div className="flex flex-wrap gap-4 items-center text-[14px] text-gray-700 mb-1">
-            {personalInfo.phone && (
-              <span className="flex items-center gap-2">
-                <Phone className="w-4 h-4" /> {personalInfo.phone}
-              </span>
-            )}
-            {personalInfo.email && (
-              <span className="flex items-center gap-2">
-                <Mail className="w-4 h-4" /> {personalInfo.email}
-              </span>
-            )}
-            {personalInfo.linkedin && (
-              <span className="flex items-center gap-2">
-                <Linkedin className="w-4 h-4" /> {personalInfo.linkedin}
-              </span>
-            )}
-            {personalInfo.twitter && (
-              <span className="flex items-center gap-2">
-                <Github className="w-4 h-4" /> {personalInfo.twitter}
-              </span>
-            )}
-          </div>
+          {personalInfo.address && (
+            <div className="flex items-center gap-2">
+              <Home className="w-4 h-4" />
+              <span>{personalInfo.address}</span>
+            </div>
+          )}
+          {personalInfo.phone && (
+            <div className="flex items-center gap-2">
+              <Phone className="w-4 h-4" />
+              <span>{personalInfo.phone}</span>
+            </div>
+          )}
         </div>
-        {/* Summary */}
-        {professionalSummary && (
-          <div className="text-[14px] text-gray-800 mb-2">
-            {professionalSummary}
+        {/* EDUCATION */}
+        <div className="mb-2">
+          <div className="bg-gray-200 px-3 py-1 text-xs font-bold tracking-widest inline-block mb-2 uppercase text-gray-700">
+            Education
           </div>
-        )}
-        {/* Experience */}
+          {education?.map((edu, idx) => (
+            <div
+              key={edu.id}
+              className="flex items-baseline justify-between mb-1"
+            >
+              <div>
+                <span className="font-bold text-[15px]">
+                  {edu.startDate}-{edu.endDate}
+                </span>{" "}
+                <span className="text-gray-700">{edu.institution}</span>
+              </div>
+              <span className="text-[15px]">{edu.degree}</span>
+            </div>
+          ))}
+        </div>
+        {/* SKILLS */}
+        <div className="mb-2">
+          <div className="flex items-center gap-2 text-base font-bold text-gray-900 mb-1">
+            <Wrench className="w-5 h-5 text-gray-700" /> Skills
+          </div>
+          <ul className="list-disc pl-6 space-y-1">
+            {skills?.map((skill) => (
+              <li key={skill.id} className="font-semibold">
+                {skill.name}
+                {typeof skill.level === "number" && (
+                  <span className="ml-2 text-xs text-gray-700 font-bold">
+                    (Level: {skill.level})
+                  </span>
+                )}
+              </li>
+            ))}
+          </ul>
+        </div>
+        {/* EXPERIENCE */}
         <div className="mb-2">
           <div className="flex items-center gap-2 text-base font-bold text-gray-900 mb-1">
             <Briefcase className="w-5 h-5 text-gray-700" /> Experience
@@ -728,82 +905,34 @@ export function ResumePreview({
             </div>
           ))}
         </div>
-        {/* Education */}
-        <div className="mb-2">
-          <div className="flex items-center gap-2 text-base font-bold text-gray-900 mb-1">
-            <GraduationCap className="w-5 h-5 text-gray-700" /> Education
-          </div>
-          {education?.map((edu) => (
-            <div key={edu.id} className="mb-1">
-              <div className="flex flex-col md:flex-row md:items-center md:justify-between">
-                <span className="font-bold text-[14px]">
-                  {edu.startDate} - {edu.endDate}
-                </span>
-                <span className="font-bold text-[14px]">{edu.degree}</span>
-              </div>
-              <div className="text-gray-700 text-[14px] font-semibold">
-                {edu.institution}
-              </div>
-              {edu.gpa && (
-                <div className="text-gray-600 text-[14px]">GPA: {edu.gpa}</div>
-              )}
-            </div>
-          ))}
-        </div>
-        {/* Skills */}
-        <div className="mb-2">
-          <div className="flex items-center gap-2 text-base font-bold text-gray-900 mb-1">
-            <Wrench className="w-5 h-5 text-gray-700" /> Skills
-          </div>
-          <div className="space-y-1">
-            {skills?.map((skill) => (
-              <div key={skill.id} className="flex items-center gap-2">
-                <span className="font-semibold w-44 inline-block truncate">
-                  {skill.name}
-                </span>
-                <div className="flex-1 flex items-center gap-1">
-                  {[1, 2, 3, 4, 5].map((lvl) => (
-                    <span
-                      key={lvl}
-                      className={`inline-block w-4 h-2 rounded-sm ${
-                        skill.level && skill.level >= lvl
-                          ? "bg-gray-800"
-                          : "bg-gray-300"
-                      }`}
-                    ></span>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-        {/* Software */}
-        {data.software && data.software.length > 0 && (
+        {/* Projects */}
+        {projects && projects.length > 0 && (
           <div className="mb-2">
             <div className="flex items-center gap-2 text-base font-bold text-gray-900 mb-1">
-              <Laptop className="w-5 h-5 text-gray-700" /> Software
+              <FolderOpen className="w-5 h-5 text-gray-700" /> Projects
             </div>
-            <div className="space-y-1">
-              {data.software.map((sw) => (
-                <div key={sw.id} className="flex items-center gap-2">
-                  <span className="font-semibold w-44 inline-block truncate">
-                    {sw.name}
-                  </span>
-                  <div className="flex-1 flex items-center gap-1">
-                    {[1, 2, 3, 4, 5].map((lvl) => (
-                      <span
-                        key={lvl}
-                        className={`inline-block w-4 h-2 rounded-sm ${
-                          sw.level && sw.level >= lvl
-                            ? "bg-gray-800"
-                            : "bg-gray-300"
-                        }`}
-                      ></span>
-                    ))}
+            <div className="space-y-2">
+              {projects.map((project) => (
+                <div key={project.id} className="flex flex-col">
+                  <div className="flex items-center gap-2">
+                    <span className="font-semibold text-[14px]">
+                      {project.name}
+                    </span>
+                    {project.url && (
+                      <a
+                        href={project.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 hover:text-blue-800 text-[12px] underline"
+                      >
+                        {project.url}
+                      </a>
+                    )}
                   </div>
-                  {sw.label && (
-                    <span className="ml-2 text-xs text-gray-700 font-bold">
-                      {sw.label}
+                  {project.description && (
+                    <span className="text-[14px] text-gray-700 ml-2 flex items-start gap-1">
+                      <span className="text-[14px] text-gray-700 mt-1">•</span>
+                      {project.description}
                     </span>
                   )}
                 </div>
@@ -811,41 +940,27 @@ export function ResumePreview({
             </div>
           </div>
         )}
-        {/* Languages */}
-        {languages && languages.length > 0 && (
+        {/* Extracurricular Activities */}
+        {extracurriculars && extracurriculars.length > 0 && (
           <div className="mb-2">
             <div className="flex items-center gap-2 text-base font-bold text-gray-900 mb-1">
-              <Globe className="w-5 h-5 text-gray-700" /> Languages
+              <Users className="w-5 h-5 text-gray-700" /> Extracurricular
+              Activities
             </div>
             <div className="space-y-1">
-              {languages.map((lang) => {
-                let level = 2;
-                if (lang.level === "Native" || lang.level === "Fluent")
-                  level = 5;
-                else if (lang.level === "Professional") level = 4;
-                else if (lang.level === "Intermediate") level = 3;
-                else if (lang.level === "Basic") level = 2;
-                return (
-                  <div key={lang.id} className="flex items-center gap-2">
-                    <span className="font-semibold w-44 inline-block truncate">
-                      {lang.name}
+              {extracurriculars.map((activity) => (
+                <div key={activity.id} className="flex flex-col">
+                  <span className="font-semibold text-[14px]">
+                    {activity.name}
+                  </span>
+                  {activity.description && (
+                    <span className="text-[14px] text-gray-700 ml-2 flex items-start gap-1">
+                      <span className="text-[14px] text-gray-700 mt-1">•</span>
+                      {activity.description}
                     </span>
-                    <div className="flex-1 flex items-center gap-1">
-                      {[1, 2, 3, 4, 5].map((lvl) => (
-                        <span
-                          key={lvl}
-                          className={`inline-block w-4 h-2 rounded-sm ${
-                            level >= lvl ? "bg-gray-800" : "bg-gray-300"
-                          }`}
-                        ></span>
-                      ))}
-                    </div>
-                    <span className="ml-2 text-xs text-gray-700 font-bold">
-                      {lang.level}
-                    </span>
-                  </div>
-                );
-              })}
+                  )}
+                </div>
+              ))}
             </div>
           </div>
         )}
@@ -860,10 +975,32 @@ export function ResumePreview({
                 <div key={cert.id} className="flex flex-col">
                   <span className="font-semibold text-[14px]">{cert.name}</span>
                   {cert.description && (
-                    <span className="text-[14px] text-gray-700 ml-2">
+                    <span className="text-[14px] text-gray-700 ml-2 flex items-start gap-1">
+                      <span className="text-[14px] text-gray-700 mt-1">•</span>
                       {cert.description}
                     </span>
                   )}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+        {/* LANGUAGES AT THE END */}
+        {languages && languages.length > 0 && (
+          <div className="mb-2">
+            <div className="bg-gray-200 px-3 py-1 text-xs font-bold tracking-widest inline-block mb-2 uppercase text-gray-700">
+              Languages
+            </div>
+            <div className="flex flex-wrap gap-4">
+              {languages.map((lang) => (
+                <div key={lang.id} className="flex items-center gap-2">
+                  <span className="text-[15px] text-gray-800">•</span>
+                  <span className="text-[15px] text-gray-800 font-medium">
+                    {lang.name}
+                  </span>
+                  <span className="text-[14px] text-gray-600">
+                    ({lang.level})
+                  </span>
                 </div>
               ))}
             </div>
@@ -877,12 +1014,12 @@ export function ResumePreview({
     return (
       <div
         id={id}
-        className="w-[210mm] min-h-[297mm] mx-auto p-10 bg-white shadow-lg text-black font-serif text-[15px] leading-normal relative"
+        className="w-[210mm] min-h-[297mm] mx-auto p-2 bg-white shadow-lg text-black font-serif text-[15px] leading-normal relative"
         data-pdf-container="true"
       >
         {/* Header: Name and Contact Bar */}
-        <div className="mb-6 flex flex-row justify-end">
-          <div className="flex flex-col items-end max-w-xl w-full">
+        <div className="mb-6 flex flex-row justify-end w-full">
+          <div className="flex flex-col items-end w-full">
             <h1 className="text-4xl font-extrabold tracking-wide text-black leading-tight uppercase text-right">
               <span>{personalInfo.name?.split(" ")[0]}</span>{" "}
               <span className="text-red-700">
@@ -943,6 +1080,38 @@ export function ResumePreview({
             ))}
           </div>
         )}
+        {/* Projects */}
+        {projects && projects.length > 0 && (
+          <div className="mb-6">
+            <div className="text-xl font-bold mb-1 border-b-2 border-red-700 pb-1">
+              Projects
+            </div>
+            {projects.map((project) => (
+              <div key={project.id} className="mb-4 px-2">
+                <div className="flex items-center gap-2">
+                  <span className="font-bold text-[16px]">{project.name}</span>
+                  {project.url && (
+                    <a
+                      href={project.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:text-blue-800"
+                    >
+                      <ExternalLink className="w-4 h-4" />
+                    </a>
+                  )}
+                </div>
+                {project.description && (
+                  <ul className="list-disc pl-6 text-[15px] text-black mt-1">
+                    {project.description.split("\n").map((line, i) => (
+                      <li key={i}>{line}</li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
         {/* Skills */}
         {skills && skills.length > 0 && (
           <div className="mb-6">
@@ -954,24 +1123,92 @@ export function ResumePreview({
                 <div key={skill.id} className="flex items-center text-[15px]">
                   <span className="inline-block w-2 h-2 bg-black rounded-full mr-2"></span>
                   {skill.name}
-                  {skill.level && (
-                    <span className="ml-2 flex items-center">
-                      {[1, 2, 3, 4, 5].map((lvl) => (
-                        <span
-                          key={lvl}
-                          className={`inline-block w-3 h-2 rounded-sm ml-0.5 ${
-                            skill.level >= lvl ? "bg-black" : "bg-gray-300"
-                          }`}
-                        ></span>
-                      ))}
-                    </span>
-                  )}
                 </div>
               ))}
             </div>
           </div>
         )}
-        {/* Languages */}
+        {/* Certifications */}
+        {certifications && certifications.length > 0 && (
+          <div className="mb-6">
+            <div className="text-xl font-bold mb-1 border-b-2 border-red-700 pb-1">
+              Certifications
+            </div>
+            {certifications.map((cert) => (
+              <div key={cert.id} className="mb-2 px-2">
+                <div className="font-bold text-black">{cert.name}</div>
+                {cert.description && (
+                  <ul className="list-disc pl-6 text-[15px] text-black mt-1">
+                    {cert.description.split("\n").map((line, i) => (
+                      <li key={i}>{line}</li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+        {/* Extracurricular Activities */}
+        {extracurriculars && extracurriculars.length > 0 && (
+          <div className="mb-6">
+            <div className="text-xl font-bold mb-1 border-b-2 border-red-700 pb-1">
+              Extracurricular Activities
+            </div>
+            {extracurriculars.map((activity) => (
+              <div key={activity.id} className="mb-4 px-2">
+                <div className="flex justify-between items-baseline">
+                  <span className="font-bold text-[16px]">
+                    {activity.title}
+                  </span>
+                  <span className="text-sm font-semibold text-gray-700">
+                    {activity.startDate} to {activity.endDate}
+                  </span>
+                </div>
+                <div className="font-bold text-black">
+                  {activity.organization}
+                  {activity.role && (
+                    <span className="font-normal text-gray-700">
+                      {" "}
+                      – {activity.role}
+                    </span>
+                  )}
+                </div>
+                {activity.description && (
+                  <ul className="list-disc pl-6 text-[15px] text-black mt-1">
+                    {activity.description.split("\n").map((line, i) => (
+                      <li key={i}>{line}</li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+        {/* Education */}
+        {education && education.length > 0 && (
+          <div className="mb-2">
+            <div className="text-xl font-bold mb-1 border-b-2 border-red-700 pb-1">
+              Education
+            </div>
+            {education.map((edu) => (
+              <div key={edu.id} className="mb-3 px-2">
+                <div className="flex justify-between items-baseline">
+                  <div className="font-bold text-black">{edu.degree}</div>
+                  <span className="text-sm font-semibold text-gray-700">
+                    {edu.startDate} to {edu.endDate}
+                  </span>
+                </div>
+                <div className="text-black">{edu.institution}</div>
+                {edu.gpa && edu.gpa.trim() !== "" && (
+                  <div className="text-[15px] text-gray-700">
+                    GPA: {edu.gpa}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+        {/* Languages at the end */}
         {languages && languages.length > 0 && (
           <div className="mb-6">
             <div className="text-xl font-bold mb-1 border-b-2 border-red-700 pb-1">
@@ -1007,20 +1244,6 @@ export function ResumePreview({
                 );
               })}
             </div>
-          </div>
-        )}
-        {/* Education */}
-        {education && education.length > 0 && (
-          <div className="mb-2">
-            <div className="text-xl font-bold mb-1 border-b-2 border-red-700 pb-1">
-              Education
-            </div>
-            {education.map((edu) => (
-              <div key={edu.id} className="mb-1 px-2">
-                <div className="font-bold text-black">{edu.degree}</div>
-                <div className="text-black">{edu.institution}</div>
-              </div>
-            ))}
           </div>
         )}
       </div>
@@ -1110,6 +1333,94 @@ export function ResumePreview({
             </div>
           </div>
         )}
+        {/* Projects */}
+        {projects && projects.length > 0 && (
+          <div className="px-10 py-4">
+            <div className="text-lg font-bold mb-1 text-black uppercase">
+              Projects
+            </div>
+            {projects.map((project) => (
+              <div key={project.id} className="mb-4">
+                <div className="flex items-center gap-2">
+                  <span className="font-bold text-[16px]">{project.name}</span>
+                  {project.url && (
+                    <a
+                      href={project.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:text-blue-800"
+                    >
+                      <ExternalLink className="w-4 h-4" />
+                    </a>
+                  )}
+                </div>
+                {project.description && (
+                  <ul className="list-disc pl-6 text-[15px] text-black mt-1">
+                    {project.description.split("\n").map((line, i) => (
+                      <li key={i}>{line}</li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+        {/* Certifications */}
+        {certifications && certifications.length > 0 && (
+          <div className="px-10 py-4">
+            <div className="text-lg font-bold mb-1 text-black uppercase">
+              Certifications
+            </div>
+            {certifications.map((cert) => (
+              <div key={cert.id} className="mb-2">
+                <div className="font-bold text-black">{cert.name}</div>
+                {cert.description && (
+                  <ul className="list-disc pl-6 text-[15px] text-black mt-1">
+                    {cert.description.split("\n").map((line, i) => (
+                      <li key={i}>{line}</li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+        {/* Extracurricular Activities */}
+        {extracurriculars && extracurriculars.length > 0 && (
+          <div className="px-10 py-4">
+            <div className="text-lg font-bold mb-1 text-black uppercase">
+              Extracurricular Activities
+            </div>
+            {extracurriculars.map((activity) => (
+              <div key={activity.id} className="mb-4">
+                <div className="flex justify-between items-baseline">
+                  <span className="font-bold text-[16px]">
+                    {activity.title}
+                  </span>
+                  <span className="text-sm font-semibold text-gray-700">
+                    {activity.startDate} to {activity.endDate}
+                  </span>
+                </div>
+                <div className="font-bold text-black">
+                  {activity.organization}
+                  {activity.role && (
+                    <span className="font-normal text-gray-700">
+                      {" "}
+                      – {activity.role}
+                    </span>
+                  )}
+                </div>
+                {activity.description && (
+                  <ul className="list-disc pl-6 text-[15px] text-black mt-1">
+                    {activity.description.split("\n").map((line, i) => (
+                      <li key={i}>{line}</li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
         {/* Education */}
         {education && education.length > 0 && (
           <div className="px-10 py-4">
@@ -1117,11 +1428,59 @@ export function ResumePreview({
               Education
             </div>
             {education.map((edu) => (
-              <div key={edu.id} className="mb-1">
-                <div className="font-bold text-black">{edu.degree}</div>
+              <div key={edu.id} className="mb-3">
+                <div className="flex justify-between items-baseline">
+                  <div className="font-bold text-black">{edu.degree}</div>
+                  <span className="text-sm font-semibold text-gray-700">
+                    {edu.startDate} to {edu.endDate}
+                  </span>
+                </div>
                 <div className="text-black">{edu.institution}</div>
+                {edu.gpa && edu.gpa.trim() !== "" && (
+                  <div className="text-[15px] text-gray-700">
+                    GPA: {edu.gpa}
+                  </div>
+                )}
               </div>
             ))}
+          </div>
+        )}
+        {/* Languages */}
+        {languages && languages.length > 0 && (
+          <div className="px-10 py-4">
+            <div className="text-lg font-bold mb-1 text-black uppercase">
+              Languages
+            </div>
+            <div className="flex flex-col gap-2">
+              {languages.map((lang) => {
+                let level = 2;
+                if (lang.level === "Native" || lang.level === "Fluent")
+                  level = 5;
+                else if (lang.level === "Professional") level = 4;
+                else if (lang.level === "Intermediate") level = 3;
+                else if (lang.level === "Basic") level = 2;
+                return (
+                  <div key={lang.id} className="flex items-center gap-2">
+                    <span className="font-semibold w-44 inline-block truncate">
+                      {lang.name}
+                    </span>
+                    <div className="flex-1 flex items-center gap-1">
+                      {[1, 2, 3, 4, 5].map((lvl) => (
+                        <span
+                          key={lvl}
+                          className={`inline-block w-4 h-2 rounded-sm ${
+                            level >= lvl ? "bg-black" : "bg-gray-300"
+                          }`}
+                        ></span>
+                      ))}
+                    </div>
+                    <span className="ml-2 text-xs text-gray-700 font-bold">
+                      {lang.level}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         )}
       </div>
@@ -1235,6 +1594,34 @@ export function ResumePreview({
                   </li>
                 ))}
               </ul>
+            </section>
+          )}
+
+          {extracurriculars && extracurriculars.length > 0 && (
+            <section className={selectedStyle.section}>
+              <h2 className={selectedStyle.sectionTitle}>
+                Extracurricular Activities
+              </h2>
+              {extracurriculars.map((extra, index) => (
+                <div
+                  key={extra.id}
+                  className={
+                    index === extracurriculars.length - 1 ? "mb-0" : "mb-2"
+                  }
+                >
+                  <p className="font-semibold">
+                    {extra.title} - {extra.organization}
+                  </p>
+                  {extra.description && (
+                    <p className="text-sm">{extra.description}</p>
+                  )}
+                  {extra.startDate || extra.endDate ? (
+                    <p className="text-xs text-gray-500">
+                      {extra.startDate} - {extra.endDate}
+                    </p>
+                  ) : null}
+                </div>
+              ))}
             </section>
           )}
         </main>
